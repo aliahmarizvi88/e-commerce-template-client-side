@@ -8,8 +8,6 @@ import WishList from '../Pages/WishList.vue';
 import ProductDetails from '../Pages/ProductDetails.vue';
 import CategoryProduct from '../components/Category/CategoryProduct.vue';
 
-import AddProduct from '../Pages/admin/AddProduct.vue';
-
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/products', name: 'Products', component: Products },
@@ -26,9 +24,6 @@ const routes = [
     name: 'CategoryProducts',
     component: CategoryProduct,
   },
-
-  //admin Routes
-  { path: '/admin/addProduct', name: 'addProduct', component: AddProduct },
 ];
 
 const router = createRouter({
