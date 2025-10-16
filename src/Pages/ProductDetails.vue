@@ -38,9 +38,6 @@ const toggleFavorite = () => {
     favoriteStore.addToFavorites(details.value);
     showToast('Product Added', 'success');
   }
-
-  showToast.value = false;
-  setTimeout(() => (showToast.value = true), 50);
 };
 
 const AddToCart = () => {

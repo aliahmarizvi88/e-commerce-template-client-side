@@ -1,33 +1,22 @@
 <script setup>
 import { useCartStore } from '../store/CartStore';
 import { X, ShoppingBag } from 'lucide-vue-next';
-import { ref } from 'vue';
+
+import { showToast } from '../utils/Toast';
 
 import { useRouter } from 'vue-router';
-
-import Toast from '../components/Toast.vue';
-
-const showToast = ref(null);
-const toastType = ref('success');
-const toastMessage = ref('');
 
 const router = useRouter();
 const cartStore = useCartStore();
 
 const checkOut = () => {
   cartStore.clearCart();
-  toastMessage.value = 'Checkout Successfull';
-
-  showToast.value = false;
-  setTimeout(() => (showToast.value = true), 50);
+  showToast('Success!', 'success');
 };
 
 const removeFromCart = (item) => {
   cartStore.removeFromCart(item);
-  toastMessage.value = 'Removed from Cart';
-
-  showToast.value = false;
-  setTimeout(() => (showToast.value = true), 50);
+  showToast('Removed!', 'info');
 };
 </script>
 
@@ -181,11 +170,5 @@ const removeFromCart = (item) => {
         </button>
       </div>
     </div>
-    <Toast
-      :show="showToast"
-      :message="toastMessage"
-      :type="toastType"
-      position="bottom-right"
-    />
   </div>
 </template>

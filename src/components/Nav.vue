@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
         <div v-if="link.label === 'Category'" class="relative">
           <button
             @click.stop="toggleDropDown"
-            class="px-2 py-1 text-base font-semibold hover:text-gray-300 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+            class="px-2 py-1 cursor-pointer text-base font-semibold hover:text-gray-300 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
           >
             {{ link.label }}
           </button>
