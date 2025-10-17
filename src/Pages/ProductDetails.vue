@@ -66,17 +66,22 @@ onMounted(async () => {
     </div>
 
     <div
+      v-else-if="loading"
+      class="flex justify-center items-center text-4xl animate-pulse font-bold min-h-screen"
+    >
+      Loading...
+    </div>
+
+    <div
       v-else-if="details"
       class="flex flex-col md:flex-row gap-10 md:gap-20 items-center"
     >
-      <!-- Image -->
       <img
         :src="details.image"
         alt="Product Image"
         class="w-full max-w-[400px] h-auto object-contain"
       />
 
-      <!-- Details -->
       <div class="flex flex-col items-start gap-3 w-full md:w-1/2">
         <p
           class="text-sm sm:text-base font-light border px-4 py-1 rounded-full border-gray-400"
@@ -95,12 +100,11 @@ onMounted(async () => {
 
         <h3 class="text-xl sm:text-2xl font-bold">$ {{ details.price }}</h3>
 
-        <!-- Buttons -->
         <div
           class="flex flex-col sm:flex-row gap-4 border-y border-gray-300 py-6 my-5 w-full"
         >
           <button
-            class="flex justify-center items-center gap-3 w-full sm:w-[250px] md:w-[350px] bg-black text-white py-3 rounded-full hover:scale-105 transition-transform font-semibold"
+            class="flex justify-center items-center gap-3 w-full sm:w-[250px] md:w-[350px] bg-black text-white py-3 rounded-full hover:scale-105 transition-transform font-semibold cursor-pointer"
             @click="AddToCart"
           >
             <ShoppingCart />
@@ -108,7 +112,7 @@ onMounted(async () => {
           </button>
 
           <button
-            class="border border-gray-400 bg-white rounded-full p-3 sm:p-4 hover:scale-105 transition-transform"
+            class="border border-gray-400 bg-white rounded-full p-3 sm:p-4 hover:scale-105 transition-transform cursor-pointer"
             @click="toggleFavorite"
           >
             <span v-if="!isFav"><Heart /></span>

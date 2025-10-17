@@ -3,6 +3,10 @@ import bannerImage_01 from '../../assets/images/HomeBanner/Banner Image/Product_
 import bannerImage_02 from '../../assets/images/HomeBanner/Banner Image/Product_02.jpg';
 import bannerImage_03 from '../../assets/images/HomeBanner/Banner Image/Product_03.jpg';
 import bannerImage_04 from '../../assets/images/HomeBanner/Banner Image/Product_04.jpg';
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 </script>
 
 <template>
@@ -51,6 +55,7 @@ import bannerImage_04 from '../../assets/images/HomeBanner/Banner Image/Product_
       </p>
       <button
         class="mt-6 px-6 py-3 bg-black text-white rounded-lg shadow hover:scale-110 transition cursor-pointer"
+        @click="router.push('/products')"
       >
         Shop Now
       </button>
