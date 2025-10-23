@@ -5,6 +5,7 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { Heart, Star, ShoppingCart } from 'lucide-vue-next';
 
+import { useProductStore } from '../store/GET/ProductStore';
 import { useFavoriteStore } from '../store/FavoriteStore';
 import { useCartStore } from '../store/CartStore';
 
@@ -14,10 +15,11 @@ const route = useRoute();
 
 const favoriteStore = useFavoriteStore();
 const cartStore = useCartStore();
+const productStore = useProductStore();
 
-const details = ref(null);
-const loading = ref(false);
-const error = ref(null);
+const details = computed(() => productStore.productDetails);
+const loading = computed(() => productStore.loading);
+const error = computed(() => productStore.errors);
 
 const isFav = computed(() =>
   details.value ? favoriteStore.isFavorite(details.value.id) : false
@@ -46,16 +48,8 @@ const AddToCart = () => {
 };
 
 onMounted(async () => {
-  loading.value = true;
-  try {
-    const id = route.params.id;
-    const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
-    details.value = response.data;
-  } catch (err) {
-    error.value = 'Failed to load Details';
-  } finally {
-    loading.value = false;
-  }
+  const id = route.params.id;
+  await productStore.fetchProductDetails(id);
 });
 </script>
 

@@ -33,6 +33,7 @@ export const useCartStore = defineStore('Cart', {
     clearCart() {
       this.cart = [];
     },
+    async checkOut() {},
   },
   getters: {
     totalItems: (state) =>

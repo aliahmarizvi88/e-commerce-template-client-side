@@ -1,5 +1,4 @@
 <script setup></script>
-
 <template>
-  <router-view />
+  <h1>This is Our Template Page</h1>
 </template>

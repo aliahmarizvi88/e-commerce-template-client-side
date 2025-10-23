@@ -94,7 +94,8 @@ onBeforeUnmount(() => {
         <router-link
           v-else
           :to="link.to"
-          class="px-2 py-1 text-base font-semibold hover:text-gray-300 relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full [&.router-link-active]:after:w-full"
+          class="px-2 py-1 text-base font-semibold relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+          exact-active-class="after:w-full text-white"
         >
           {{ link.label }}
         </router-link>
@@ -117,6 +118,7 @@ onBeforeUnmount(() => {
       </button>
       <button
         class="cursor-pointer bg-white text-black text-xl rounded-full p-2 hover:scale-110 transition duration-300"
+        @click="router.push('/profile')"
       >
         <UserRound fill="black" />
       </button>
@@ -150,7 +152,7 @@ onBeforeUnmount(() => {
           v-for="link in links"
           :key="link.to"
           :to="link.to"
-          class="px-2 py-1 hover:text-gray-300 [&.router-link-active]:text-blue-400"
+          class="px-2 py-1 hover:text-gray-300 [&.router-link-active]:text-white"
           @click="isOpen = false"
         >
           {{ link.label }}
@@ -175,7 +177,10 @@ onBeforeUnmount(() => {
           >
             <Star fill="black" />
           </button>
-          <button class="cursor-pointer bg-white text-black rounded-full p-2">
+          <button
+            class="cursor-pointer bg-white text-black rounded-full p-2"
+            @click="router.push('/profile')"
+          >
             <UserRound fill="black" />
           </button>
         </div>

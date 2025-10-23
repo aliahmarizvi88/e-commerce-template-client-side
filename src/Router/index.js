@@ -7,22 +7,54 @@ import Cart from '../Pages/Cart.vue';
 import WishList from '../Pages/WishList.vue';
 import ProductDetails from '../Pages/ProductDetails.vue';
 import CategoryProduct from '../components/Category/CategoryProduct.vue';
+import ProfilePage from '../Pages/ProfilePage.vue';
 
+//Admins Pages
+import AdminDashboard from '../Pages/Admin/AdminDashboard.vue';
+import AdminProduct from '../Pages/Admin/AdminProduct.vue';
+import AdminOrder from '../Pages/Admin/AdminOrders.vue';
+import AdminUser from '../Pages/Admin/AdminUser.vue';
+
+import User from '../layout/User.vue';
+import Admin from '../layout/Admin.vue';
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/products', name: 'Products', component: Products },
   {
-    path: '/product/:id',
-    name: 'ProductDetails',
-    component: ProductDetails,
+    path: '/',
+    component: User,
+    children: [
+      { path: '', name: 'Home', component: Home },
+      { path: 'products', name: 'Products', component: Products },
+      {
+        path: 'product/:id',
+        name: 'ProductDetails',
+        component: ProductDetails,
+      },
+      { path: 'category', name: 'Category', component: Category },
+      { path: 'cart', name: 'Cart', component: Cart },
+      { path: 'wishList', name: 'WishList', component: WishList },
+      {
+        path: 'category/:category',
+        name: 'CategoryProducts',
+        component: CategoryProduct,
+      },
+      {
+        path: 'profile',
+        name: 'UserProfile',
+        component: ProfilePage,
+      },
+    ],
   },
-  { path: '/category', name: 'Category', component: Category },
-  { path: '/cart', name: 'Cart', component: Cart },
-  { path: '/wishList', name: 'WishList', component: WishList },
+
+  //admin Pages/Routes:
   {
-    path: '/category/:category',
-    name: 'CategoryProducts',
-    component: CategoryProduct,
+    path: '/admin',
+    component: Admin,
+    children: [
+      { path: '', name: 'AdminDashboard', component: AdminDashboard },
+      { path: 'products', name: 'AdminProduct', component: AdminProduct },
+      { path: 'orders', name: 'AdminOrder', component: AdminOrder },
+      { path: 'users', name: 'AdminUser', component: AdminUser },
+    ],
   },
 ];
 
