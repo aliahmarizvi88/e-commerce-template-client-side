@@ -1,4 +1,4 @@
-# 🛍️ Paperhub E-Commerce Template (Client-Side)
+# 🛍️ E-Commerce Template (Client-Side)
 
 A modern and responsive **e-commerce front-end template** built with **Vue 3**, **Pinia**, **Tailwind CSS**, and **Vue Toastification**.  
 This template is designed for scalable, maintainable, and beautiful online store front-ends — perfect for learning, prototyping, or extending into a full-stack application.
