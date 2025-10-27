@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '../store/AuthStore';
 
 import Home from '../Pages/Home.vue';
 import Products from '../Pages/Products.vue';
@@ -82,5 +83,28 @@ const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
   },
+});
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+
+  if (to.meta.isAdmin) {
+    if (!authStore.isAuthenticated) return next({ name: 'AdminLogin' });
+
+    if (!authStore.isAdmin) return next({ name: 'Home' });
+  }
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    return next({ name: 'UserLogin' });
+  }
+
+  const isAuthRoute = to.name === 'UserLogin' || to.name === 'AdminLogin';
+  if (authStore.isAuthenticated && isAuthRoute) {
+    return next(
+      authStore.isAdmin ? { name: 'AdminDashboard' } : { name: 'Home' }
+    );
+  }
+
+  next();
 });
 export default router;

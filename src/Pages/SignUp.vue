@@ -15,6 +15,15 @@
 
     <div class="mb-2">
       <input
+        type="text"
+        placeholder="Username"
+        class="relative bg-white py-3 px-4 w-[400px] rounded-lg shadow-lg focus-within:outline-1 outline-gray-400"
+        required
+      />
+    </div>
+
+    <div class="mb-2">
+      <input
         type="password"
         placeholder="Password"
         class="relative bg-white py-3 px-4 w-[400px] rounded-lg shadow-lg focus-within:outline-1 outline-gray-400"
