@@ -15,8 +15,15 @@ import AdminProduct from '../Pages/Admin/AdminProduct.vue';
 import AdminOrder from '../Pages/Admin/AdminOrders.vue';
 import AdminUser from '../Pages/Admin/AdminUser.vue';
 
+//Auth Pages
+import AdminLogin from '../Pages/Admin/AdminLogin.vue';
+import Login from '../Pages/Login.vue';
+import SignUp from '../Pages/SignUp.vue';
+
 import User from '../layout/User.vue';
 import Admin from '../layout/Admin.vue';
+import Auth from '../layout/Auth.vue';
+
 const routes = [
   {
     path: '/',
@@ -54,6 +61,17 @@ const routes = [
       { path: 'products', name: 'AdminProduct', component: AdminProduct },
       { path: 'orders', name: 'AdminOrder', component: AdminOrder },
       { path: 'users', name: 'AdminUser', component: AdminUser },
+    ],
+  },
+
+  //Auth Pages/Routes:
+  {
+    path: '/auth',
+    component: Auth,
+    children: [
+      { path: 'adminLogin', name: 'AdminLogin', component: AdminLogin },
+      { path: 'login', name: 'login', component: Login },
+      { path: 'signUp', name: 'signup', component: SignUp },
     ],
   },
 ];

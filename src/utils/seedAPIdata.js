@@ -32,6 +32,7 @@ async function seedData() {
       products: productsData,
       users: usersData,
       orders: [],
+      admin: [],
     };
 
     fs.writeFileSync(DB_PATH, JSON.stringify(dataToWrite, null, 2));
