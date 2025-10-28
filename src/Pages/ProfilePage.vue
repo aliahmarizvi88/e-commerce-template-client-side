@@ -1,8 +1,10 @@
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../store/AuthStore';
 import { storeToRefs } from 'pinia';
 
+import UniDailogue from '../components/UniDailogue.vue';
 import { showToast } from '../utils/Toast';
 import { Trash2, LockKeyhole, LogOut, Pencil } from 'lucide-vue-next';
 
@@ -12,10 +14,21 @@ const router = useRouter();
 
 const { userProfile } = storeToRefs(authStore);
 
+const passwordDailog = ref(false);
+const updateDailog = ref(false);
+
 const handleLogout = () => {
   authStore.logout();
   showToast('Logout Sucessful');
   router.push('/');
+};
+
+const handlePassword = () => {
+  passwordDailog.value = true;
+};
+
+const handleUpdate = () => {
+  updateDailog.value = true;
 };
 </script>
 <template>
@@ -37,7 +50,10 @@ const handleLogout = () => {
       >
         <div class="flex justify-between items-center">
           <h1 class="text-xl font-bold mt-3">Personal Info</h1>
-          <button class="p-2 rounded-full hover:bg-gray-300 cursor-pointer">
+          <button
+            class="p-2 rounded-full hover:bg-gray-300 cursor-pointer"
+            @click="handleUpdate"
+          >
             <Pencil size="20" />
           </button>
         </div>
@@ -78,6 +94,7 @@ const handleLogout = () => {
         <h1 class="text-xl font-bold mt-3">Perform Action</h1>
 
         <button
+          @click="handlePassword"
           class="text-md text-red-500 font-semibold cursor-pointer hover:bg-red-100 p-2 rounded-lg duration-150 flex justify-center gap-2 items-center"
         >
           <LockKeyhole size="18" />
@@ -115,4 +132,38 @@ const handleLogout = () => {
       </div>
     </div>
   </div>
+
+  <UniDailogue
+    v-model="passwordDailog"
+    title="Change Password"
+    width="420px"
+    @confirm=""
+    @cancel="passwordDailog = false"
+  >
+    <div class="flex flex-col gap-5">
+      <input
+        type="password"
+        class="border border-gray-300 py-2 px-3 rounded-lg"
+        placeholder="Old Password"
+      />
+      <input
+        type="password"
+        class="border border-gray-300 py-2 px-3 rounded-lg"
+        placeholder="New Password"
+      />
+      <input
+        type="password"
+        class="border border-gray-300 py-2 px-3 rounded-lg"
+        placeholder="New Confrim Password"
+      />
+    </div>
+  </UniDailogue>
+
+  <UniDailogue
+    v-model="updateDailog"
+    title="Update Data"
+    width="420px"
+    @confirm=""
+    @cancel="updateDailog = false"
+  ></UniDailogue>
 </template>

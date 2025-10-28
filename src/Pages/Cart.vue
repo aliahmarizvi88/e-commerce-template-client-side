@@ -5,13 +5,21 @@ import { X, ShoppingBag } from 'lucide-vue-next';
 import { showToast } from '../utils/Toast';
 
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const router = useRouter();
 const cartStore = useCartStore();
 
-const checkOut = () => {
-  cartStore.clearCart();
-  showToast('Success!', 'success');
+const checkOut = async () => {
+  const errorMessage = ref(null);
+
+  try {
+    await cartStore.checkOut();
+    showToast('Check out Sucessfull', 'success');
+  } catch (error) {
+    errorMessage.value = cartStore.error;
+    showToast(errorMessage.value, 'error');
+  }
 };
 
 const removeFromCart = (item) => {

@@ -43,6 +43,14 @@
         >
           Users
         </router-link>
+
+        <router-link
+          to="/admin/manager"
+          class="text-gray-600 font-medium hover:text-blue-600 transition-colors duration-200"
+          active-class="text-blue-600 font-semibold"
+        >
+          Admin
+        </router-link>
       </nav>
     </div>
   </header>

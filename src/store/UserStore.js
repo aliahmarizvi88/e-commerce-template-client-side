@@ -32,8 +32,6 @@ export const useUserStore = defineStore('userStore', {
         this.loading = false;
       }
     },
-    deleteUser(id) {
-      this.users = this.users.filter((item) => item.id !== id);
-    },
+    deleteUser(id) {},
   },
 });
