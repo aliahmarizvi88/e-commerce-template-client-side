@@ -14,23 +14,133 @@ const router = useRouter();
 
 const { userProfile } = storeToRefs(authStore);
 
-const passwordDailog = ref(false);
-const updateDailog = ref(false);
-
 const handleLogout = () => {
   authStore.logout();
   showToast('Logout Sucessful');
   router.push('/');
 };
 
-const handlePassword = () => {
+//Update User Profile:
+const updateDailog = ref(false);
+
+const detailsForm = ref({
+  firstName: '',
+  lastName: '',
+  phone: '',
+  city: '',
+  number: 0,
+  street: '',
+  zipcode: '',
+  username: '',
+});
+
+const handleUpdateClick = () => {
+  if (userProfile.value) {
+    detailsForm.value = {
+      username: userProfile.value.username || '',
+      firstName: userProfile.value.name?.firstname || '',
+      lastName: userProfile.value.name?.lastname || '',
+      phone: userProfile.value.phone || '',
+
+      number: userProfile.value.address?.number || 0,
+      street: userProfile.value.address?.street || '',
+      city: userProfile.value.address?.city || '',
+      zipcode: userProfile.value.address?.zipcode || '',
+    };
+  }
+  updateDailog.value = true;
+};
+
+const handleUpdateConfirm = async () => {
+  const payload = {
+    username: detailsForm.value.username,
+    name: {
+      firstname: detailsForm.value.firstName,
+      lastname: detailsForm.value.lastName,
+    },
+    phone: detailsForm.value.phone,
+    address: {
+      city: detailsForm.value.city,
+      street: detailsForm.value.street,
+      zipcode: detailsForm.value.zipcode,
+
+      number: detailsForm.value.number,
+      geolocation: userProfile.value.address?.geolocation || {
+        lat: '0',
+        long: '0',
+      },
+    },
+  };
+
+  try {
+    await authStore.updateUserDetails(payload);
+    showToast('Profile updated successfully!', 'success');
+    updateDailog.value = false;
+  } catch (error) {
+    showToast(`Update Failed: ${authStore.error}`, 'error');
+  }
+};
+
+//Change Password/Update Password:
+const passwordDailog = ref(false);
+
+const passwordForm = ref({
+  oldPassword: '',
+  newPassword: '',
+  newConfirmPassword: '',
+});
+
+const handlePasswordClick = () => {
+  passwordForm.value = {
+    oldPassword: '',
+    newPassword: '',
+    newConfirmPassword: '',
+  };
   passwordDailog.value = true;
 };
 
-const handleUpdate = () => {
-  updateDailog.value = true;
+const handleConfirmPassword = async () => {
+  authStore.error = null;
+  const form = passwordForm.value;
+
+  if (!form.oldPassword || !form.newPassword || !form.newConfirmPassword) {
+    showToast('Fill all the Feilds', 'error');
+    return;
+  }
+  if (form.newPassword !== form.newConfirmPassword) {
+    showToast('Password do not match', 'error');
+    return;
+  }
+
+  try {
+    await authStore.ChangeUserPassword(form);
+    showToast('Password Changed, Please Login Again', 'success');
+    passwordDailog.value = false;
+    authStore.logout();
+    router.push('/auth/login');
+  } catch (error) {
+    showToast(`Password Update Failed: ${authStore.error}`, 'error');
+  }
+};
+
+//Delete User Account:
+const confirmDailog = ref(false);
+
+const deleteClick = () => {
+  confirmDailog.value = true;
+};
+
+const deleteUserAccount = async () => {
+  try {
+    await authStore.deleteAccount();
+    showToast('Account Deleted, Goodbye!', 'success');
+    router.push('/');
+  } catch (error) {
+    showToast(`Deletion Failed: ${authStore.error}`, 'error');
+  }
 };
 </script>
+
 <template>
   <div class="max-w-xl mx-auto p-6 rounded-lg">
     <div v-if="userProfile">
@@ -52,7 +162,7 @@ const handleUpdate = () => {
           <h1 class="text-xl font-bold mt-3">Personal Info</h1>
           <button
             class="p-2 rounded-full hover:bg-gray-300 cursor-pointer"
-            @click="handleUpdate"
+            @click="handleUpdateClick"
           >
             <Pencil size="20" />
           </button>
@@ -94,7 +204,7 @@ const handleUpdate = () => {
         <h1 class="text-xl font-bold mt-3">Perform Action</h1>
 
         <button
-          @click="handlePassword"
+          @click="handlePasswordClick"
           class="text-md text-red-500 font-semibold cursor-pointer hover:bg-red-100 p-2 rounded-lg duration-150 flex justify-center gap-2 items-center"
         >
           <LockKeyhole size="18" />
@@ -103,6 +213,7 @@ const handleUpdate = () => {
 
         <button
           class="text-md text-red-500 font-semibold cursor-pointer hover:bg-red-100 p-2 rounded-lg duration-150 flex justify-center gap-2 items-center"
+          @click="deleteClick"
         >
           <Trash2 size="18" />
           Delete Account
@@ -136,25 +247,28 @@ const handleUpdate = () => {
   <UniDailogue
     v-model="passwordDailog"
     title="Change Password"
+    type="form"
     width="420px"
-    @confirm=""
-    @cancel="passwordDailog = false"
+    @confirm="handleConfirmPassword"
   >
     <div class="flex flex-col gap-5">
       <input
         type="password"
         class="border border-gray-300 py-2 px-3 rounded-lg"
+        v-model="passwordForm.oldPassword"
         placeholder="Old Password"
       />
       <input
         type="password"
         class="border border-gray-300 py-2 px-3 rounded-lg"
+        v-model="passwordForm.newPassword"
         placeholder="New Password"
       />
       <input
         type="password"
         class="border border-gray-300 py-2 px-3 rounded-lg"
-        placeholder="New Confrim Password"
+        v-model="passwordForm.newConfirmPassword"
+        placeholder="New Confirm Password"
       />
     </div>
   </UniDailogue>
@@ -162,8 +276,78 @@ const handleUpdate = () => {
   <UniDailogue
     v-model="updateDailog"
     title="Update Data"
+    type="form"
     width="420px"
-    @confirm=""
-    @cancel="updateDailog = false"
-  ></UniDailogue>
+    @confirm="handleUpdateConfirm"
+  >
+    <div class="flex flex-col gap-5">
+      <h4 class="font-semibold text-gray-700 mt-2">Personal & Contact Info</h4>
+      <div class="flex gap-1">
+        <input
+          type="text"
+          class="border border-gray-300 py-2 px-3 rounded-lg w-45"
+          v-model="detailsForm.firstName"
+          placeholder="First Name"
+        />
+        <input
+          type="text"
+          class="border border-gray-300 py-2 px-3 rounded-lg w-45"
+          v-model="detailsForm.lastName"
+          placeholder="Last Name"
+        />
+      </div>
+      <input
+        type="text"
+        class="border border-gray-300 py-2 px-3 rounded-lg"
+        v-model="detailsForm.username"
+        placeholder="Username"
+      />
+      <input
+        type="text"
+        class="border border-gray-300 py-2 px-3 rounded-lg"
+        v-model="detailsForm.phone"
+        placeholder="Phone"
+      />
+
+      <h4 class="font-semibold text-gray-700 mt-2">Address Details</h4>
+      <div class="flex gap-1">
+        <input
+          type="number"
+          class="border border-gray-300 py-2 px-3 rounded-lg w-30"
+          v-model="detailsForm.number"
+          placeholder="Number"
+        />
+        <input
+          type="text"
+          class="border border-gray-300 py-2 px-3 rounded-lg w-30"
+          v-model="detailsForm.street"
+          placeholder="Street/Area"
+        />
+        <input
+          type="text"
+          class="border border-gray-300 py-2 px-3 rounded-lg w-30"
+          v-model="detailsForm.city"
+          placeholder="City"
+        />
+      </div>
+      <input
+        type="text"
+        class="border border-gray-300 py-2 px-3 rounded-lg"
+        v-model="detailsForm.zipcode"
+        placeholder="Zip Code"
+      />
+      <p class="text-sm text-gray-500 mt-1">
+        Email and User ID cannot be changed.
+      </p>
+    </div>
+  </UniDailogue>
+
+  <UniDailogue
+    v-model="confirmDailog"
+    title="Deleting Account!"
+    type="confirm"
+    message="This is action action will delete all the data linked to your account permanently, Are you sure?"
+    width="350px"
+    @confirm="deleteUserAccount"
+  />
 </template>

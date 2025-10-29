@@ -461,28 +461,6 @@
       },
       "phone": "1-104-001-4567",
       "__v": 0
-    },
-    {
-      "id": "cf39",
-      "email": "aliahmadrizvi88@gmail.com",
-      "username": "syed aliahmad rizvi19",
-      "password": "12345678",
-      "name": {
-        "firstname": "Syed Ali",
-        "lastname": "Ahmad Rizvi"
-      },
-      "phone": "yet needed to add",
-      "address": {
-        "geolocation": {
-          "lat": "0",
-          "long": "0"
-        },
-        "city": "yet needed to add",
-        "street": "yet needed to add",
-        "number": 0,
-        "zipcode": "yet needed to add"
-      },
-      "__v": 0
     }
   ],
   "orders": [

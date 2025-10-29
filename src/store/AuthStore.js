@@ -136,23 +136,71 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async ChangeUserPassword({ oldPassword, newPassword, confrimNewPassword }) {
-      this.loading = false;
+    //Update User
+    async updateUserDetails(updatedPayload) {
+      this.loading = true;
       this.error = null;
 
       if (!this.isAuthenticated) {
-        this.error = 'Authentication is required to Change Password';
+        this.error = 'Authentication required to update profile.';
         this.loading = false;
         throw new Error(this.error);
       }
 
-      if (newPassword !== confrimNewPassword) {
+      const userId = this.userProfile.id;
+
+      let fullCurrentUser;
+      try {
+        const fetchResponse = await axios.get(`${URL}/users/${userId}`);
+        fullCurrentUser = fetchResponse.data;
+      } catch (fetchError) {
+        this.error = 'Could not fetch current user data for update.';
+        this.loading = false;
+        throw fetchError;
+      }
+
+      const finalUpdateObject = {
+        id: fullCurrentUser.id,
+        email: fullCurrentUser.email,
+        password: fullCurrentUser.password,
+
+        username: updatedPayload.username,
+        name: updatedPayload.name,
+        phone: updatedPayload.phone,
+        address: updatedPayload.address,
+
+        __v: fullCurrentUser.__v || 0,
+      };
+
+      try {
+        const response = await axios.put(
+          `${URL}/users/${userId}`,
+          finalUpdateObject
+        );
+
+        if (response.data) {
+          this._handleSuccessfulLogin(response.data, this.userType);
+        }
+      } catch (err) {
+        this.error = err.message || 'Failed to update user details on server.';
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    //Change Password
+    async ChangeUserPassword({ oldPassword, newPassword, newConfirmPassword }) {
+      this.loading = true;
+      this.error = null;
+
+      if (newPassword !== newConfirmPassword) {
         this.error = 'New password do not match.';
         this.loading = false;
         throw new Error(this.error);
       }
 
-      const userId = this.profileData.id;
+      const userId = this.userProfile.id;
 
       try {
         const userResponse = await axios.get(`${URL}/users/${userId}`);
@@ -175,7 +223,21 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    DeleteAccount() {},
+    async deleteAccount() {
+      this.loading = true;
+      this.error = null;
+
+      const userId = this.userProfile.id;
+
+      try {
+        await axios.delete(`${URL}/users/${userId}`);
+        this.logout();
+      } catch (err) {
+        this.error = err.message;
+      } finally {
+        this.loading = false;
+      }
+    },
 
     logout() {
       sessionStorage.removeItem('token');
