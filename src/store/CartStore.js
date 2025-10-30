@@ -59,6 +59,8 @@ export const useCartStore = defineStore('Cart', {
         address: authStore.userProfile.address,
         email: authStore.userProfile.email,
         items: this.cart,
+        totalprice: this.totalPrice,
+        totalitem: this.totalItems,
         date: new Date().toISOString(),
         status: 'Processing',
       };

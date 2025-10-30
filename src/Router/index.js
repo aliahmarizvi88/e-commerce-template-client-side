@@ -15,6 +15,7 @@ import AdminDashboard from '../Pages/Admin/AdminDashboard.vue';
 import AdminProduct from '../Pages/Admin/AdminProduct.vue';
 import AdminOrder from '../Pages/Admin/AdminOrders.vue';
 import AdminUser from '../Pages/Admin/AdminUser.vue';
+import AdminManger from '../Pages/Admin/AdminManger.vue';
 
 //Auth Pages
 import AdminLogin from '../Pages/Admin/AdminLogin.vue';
@@ -62,6 +63,7 @@ const routes = [
       { path: 'products', name: 'AdminProduct', component: AdminProduct },
       { path: 'orders', name: 'AdminOrder', component: AdminOrder },
       { path: 'users', name: 'AdminUser', component: AdminUser },
+      { path: 'manager', name: 'AdminManager', component: AdminManger },
     ],
   },
 

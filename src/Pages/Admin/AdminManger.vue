@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import Error from '../../components/Error.vue';
 </script>
 
-<template></template>
+<template>
+  <Error />
+</template>
