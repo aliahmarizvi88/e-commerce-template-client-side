@@ -66,7 +66,7 @@ const router = useRouter();
 
       <!-- Manage Admin -->
       <div
-        @click="router.push('/admin/orders')"
+        @click="router.push('/admin/manager')"
         class="group cursor-pointer border border-gray-200 rounded-2xl p-6 bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
       >
         <div class="flex items-center justify-between mb-2">

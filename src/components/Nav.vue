@@ -83,7 +83,7 @@ onBeforeUnmount(() => {
               v-for="cat in categoryStore.category"
               :key="cat"
               :to="`/category/${cat}`"
-              class="block px-4 py-2 hover:bg-gray-100 hover:rounded-2xl cursor-pointer text-left"
+              class="block px-4 py-2 hover:bg-gray-100 hover:rounded-2xl cursor-pointer text-left capitalize"
               @click="selectCategory(cat)"
             >
               {{ cat }}

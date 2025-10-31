@@ -114,6 +114,30 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    //Admin Login
+    async adminUser(credentials) {
+      this.error = null;
+      this.loading = false;
+
+      try {
+        const response = await axios.get(
+          `${URL}/admin?email=${credentials.email}&password=${credentials.password}`
+        );
+
+        if (response.data.length === 1) {
+          const foundAdmin = response.data[0];
+          this._handleSuccessfulLogin(foundAdmin, 'admin');
+          return foundAdmin;
+        } else {
+          throw new Error('Invaild admin credentails');
+        }
+      } catch (err) {
+        this.error = err.message;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async UserLogin(credentials) {
       this.loading = true;
       this.error = null;

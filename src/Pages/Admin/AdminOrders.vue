@@ -1,10 +1,19 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import Uni_table from '../../components/Admin/Uni_table.vue';
+import Preview from '../../components/Admin/Preview.vue';
 
 import { useOrderStore } from '../../store/OrderStore';
 
 const orderStore = useOrderStore();
+
+const previewOrder = ref(null);
+const showPreview = ref(false);
+
+function handleHover(orders) {
+  previewOrder.value = orders;
+  showPreview.value = true;
+}
 
 const columns = [
   { key: 'id', label: 'Order Id' },
@@ -24,11 +33,15 @@ onMounted(() => {
     <h1 class="text-2xl font-bold mb-6">Order Management</h1>
 
     <div v-if="orderStore.error" class="text-red-500">
-      {{ userStore.error }}
+      {{ orderStore.error }}
     </div>
 
-    <div class="">
-      <uni_table :columns="columns" :rows="orderStore.orders">
+    <div v-else>
+      <uni_table
+        :columns="columns"
+        :rows="orderStore.orders"
+        @click="handleHover"
+      >
         <template #totalprice="{ value }">
           <span class="text-green-600 font-semibold"
             >${{ value.toFixed(2) }}</span
@@ -43,6 +56,11 @@ onMounted(() => {
           </button>
         </template>
       </uni_table>
+      <Preview
+        :show="showPreview"
+        :data="previewOrder"
+        @close="showPreview = false"
+      />
     </div>
   </div>
 </template>

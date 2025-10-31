@@ -39,8 +39,16 @@ const routes = [
         component: ProductDetails,
       },
       { path: 'category', name: 'Category', component: Category },
-      { path: 'cart', name: 'Cart', component: Cart },
-      { path: 'wishList', name: 'WishList', component: WishList },
+      {
+        path: 'cart',
+        name: 'Cart',
+        component: Cart,
+      },
+      {
+        path: 'wishList',
+        name: 'WishList',
+        component: WishList,
+      },
       {
         path: 'category/:category',
         name: 'CategoryProducts',
@@ -58,6 +66,7 @@ const routes = [
   {
     path: '/admin',
     component: Admin,
+    meta: { requiresAuth: true, isAdmin: true },
     children: [
       { path: '', name: 'AdminDashboard', component: AdminDashboard },
       { path: 'products', name: 'AdminProduct', component: AdminProduct },

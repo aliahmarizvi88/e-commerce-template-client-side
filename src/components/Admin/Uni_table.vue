@@ -27,7 +27,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['edit', 'delete', 'add', 'ban']);
+const emits = defineEmits(['edit', 'delete', 'add', 'ban', 'click']);
 
 // const hasData = computed(() => props.rows && props.rows.length > 0);
 </script>
@@ -77,6 +77,7 @@ const emits = defineEmits(['edit', 'delete', 'add', 'ban']);
           v-for="(row, index) in rows"
           :key="index"
           class="hover:bg-gray-50 transition-colors duration-150"
+          @click="$emit('click', row)"
         >
           <td
             v-for="col in columns"

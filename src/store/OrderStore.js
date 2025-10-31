@@ -25,5 +25,14 @@ export const useOrderStore = defineStore('orders', {
         this.loading = false;
       }
     },
+
+    async orderDetails(id) {
+      this.loading = true;
+      this.errors = null;
+
+      try {
+        const responsive = await axios.get(`${URL}/orders/${id}`);
+      } catch (error) {}
+    },
   },
 });
